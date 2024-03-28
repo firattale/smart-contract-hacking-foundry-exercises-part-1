@@ -42,12 +42,14 @@ contract AIvestICO {
         token.burn(msg.sender, numTokens);
 
         // 1 ETH = 10 Tokens (1 Token = 0.1 ETH)
-        payable(msg.sender).call{value: (numTokens * 10) / 100}("");
+        (bool success,) = payable(msg.sender).call{value: (numTokens * 10) / 100}("");
+        require(success, "Transfer failed");
     }
 
     function adminWithdraw() external onlyAdmin {
         require(block.timestamp > startTime + SALE_PERIOD, "only when sale is over");
-        payable(msg.sender).call{value: address(this).balance}("");
+        (bool success,) = payable(msg.sender).call{value: address(this).balance}("");
+        require(success, "Transfer failed");
     }
 
     function adminMint(address _to, uint256 _amount) external onlyAdmin {
