@@ -7,27 +7,21 @@ pragma solidity ^0.4.24;
  * @author JohnnyTime (https://smartcontractshacking.com)
  */
 contract ProtocolVault {
-    
     // Contract owner
-    address public owner; 
+    address public owner;
 
-    constructor  
-    
-    
-    
-    () public {
+    constructor() public {
         owner = msg.sender;
     }
- 
+
     function withdrawETH() external {
         require(msg.sender == owner, "Not owner");
         this._sendETH(msg.sender);
     }
- 
+
     function _sendETH(address to) public {
-      to.transfer(address(this).balance);
+        to.transfer(address(this).balance);
     }
 
     function() external payable {}
 }
-
