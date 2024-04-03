@@ -4,29 +4,21 @@
 pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract rToken is ERC20 {
-    address public owner;
-    address public underlyingToken;
+contract rToken is ERC20, Ownable {
+    address _underlyingToken;
 
-    // TODO: Complete this contract functionality
-
-    modifier onlyOwner() {
-        require(msg.sender == owner, "RESTRICTED! Only owner can perform this call.");
-        _;
+    constructor(address underlyingToken) ERC20("rToken", "rToken") Ownable(msg.sender) {
+        require(underlyingToken != address(0));
+        _underlyingToken = underlyingToken;
     }
 
-    constructor(address _underlyingToken, string memory _name, string memory _symbol) ERC20(_name, _symbol) {
-        require(_underlyingToken != address(0));
-        owner = msg.sender;
-        underlyingToken = _underlyingToken;
+    function mint(address _to, uint256 amount) public onlyOwner {
+        _mint(_to, amount);
     }
 
-    function mint(address token, uint256 amount) external onlyOwner {
-        _mint(token, amount);
-    }
-
-    function burn(address token, uint256 amount) external onlyOwner {
-        _burn(token, amount);
+    function burn(address _from, uint256 amount) public onlyOwner {
+        _burn(_from, amount);
     }
 }
