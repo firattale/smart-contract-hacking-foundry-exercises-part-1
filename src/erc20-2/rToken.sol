@@ -9,7 +9,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract rToken is ERC20, Ownable {
     address _underlyingToken;
 
-    constructor(address underlyingToken) ERC20("rToken", "rToken") Ownable(msg.sender) {
+    constructor(address underlyingToken, string memory _name, string memory _symbol)
+        ERC20(_name, _symbol)
+        Ownable(msg.sender)
+    {
         require(underlyingToken != address(0));
         _underlyingToken = underlyingToken;
     }
