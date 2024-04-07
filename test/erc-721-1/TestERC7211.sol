@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "forge-std/console.sol";
 import "forge-std/Test.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {MyToken} from "../../src/erc721-1/MyToken.sol";
 
 contract TestERC7211 is Test {

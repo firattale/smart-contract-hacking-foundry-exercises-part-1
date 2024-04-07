@@ -1,71 +1,68 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
-// SCH Course Copyright Policy (C): DO-NOT-SHARE-WITH-ANYONE
-// https://smartcontractshacking.com/#copyright-policy
-pragma solidity ^0.8.13;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
-/**
- * @title OpenOcean
- * @author JohnnyTime (https://smartcontractshacking.com)
- */
 contract OpenOcean {
-    // TODO: Complete this contract functionality
+    uint256 constant maxPrice = 100 ether;
 
-    // TODO: Constants
-    uint256 public constant MAX_PRICE = 100 ether;
-
-    // TODO: Item Struct
     struct Item {
         uint256 itemId;
-        address collectionContract;
+        address collectionAddress;
         uint256 tokenId;
         uint256 price;
         address payable seller;
         bool isSold;
     }
 
-    // TODO: State Variables and Mappings
     uint256 public itemsCounter;
-    mapping(uint256 => Item) public listedItems;
+    mapping(uint256 itemId => Item) public listedItems;
 
-    constructor() {}
+    /**
+     * @dev Lists an item on the marketplace.
+     * @param _collectionAddress The address of the NFT collection.
+     * @param _tokenId The token ID of the NFT to list.
+     * @param _price The price of the NFT.
+     * Requirements:
+     * - `_collectionAddress` cannot be the zero address.
+     * - `_price` must be greater than 0 and less than or equal to `maxPrice`.
+     * Emits a transfer event when the NFT is transferred from the seller to the contract.
+     */
+    function listItem(address _collectionAddress, uint256 _tokenId, uint256 _price) external {
+        require(_collectionAddress != address(0), "Invalid collection address");
+        require(_price > 0 && _price <= maxPrice, "Invalid price");
 
-    // TODO: List item function
-    function listItem(address _collection, uint256 _tokenId, uint256 _price) external {
-        // 1. Make sure params are correct
-        require(_price > 0 && _price <= MAX_PRICE, "0<=Price<=100 ETH");
-        // 2. Increment itemsCounter
         itemsCounter += 1;
-        // 3. Transfer token from sender to the contract
-        IERC721(_collection).transferFrom(msg.sender, address(this), _tokenId);
-        // 4. Add item to listedItems mapping
-        listedItems[itemsCounter].itemId = itemsCounter;
-        listedItems[itemsCounter].collectionContract = _collection;
-        listedItems[itemsCounter].tokenId = _tokenId;
-        listedItems[itemsCounter].price = _price;
-        listedItems[itemsCounter].seller = payable(msg.sender);
-        listedItems[itemsCounter].isSold = false;
+        IERC721(_collectionAddress).transferFrom(msg.sender, address(this), _tokenId);
+        listedItems[itemsCounter] = Item(itemsCounter, _collectionAddress, _tokenId, _price, payable(msg.sender), false);
     }
 
-    // TODO: Purchase item function
+    /**
+     * @dev Allows a user to purchase a listed item from the marketplace.
+     * @param _itemId The ID of the item to purchase.
+     * Requirements:
+     * - The item must exist (itemId must be valid).
+     * - The item must not already be sold.
+     * - The sent value (msg.value) must exactly match the item's price.
+     * On success, the item is marked as sold, the NFT is transferred to the buyer,
+     * and the sale proceeds are transferred to the seller.
+     */
+    function purchase(uint256 _itemId) external payable {
+        require(listedItems[_itemId].itemId == _itemId, "Item not found");
+        require(listedItems[_itemId].isSold == false, "Item already sold");
+        require(msg.value == listedItems[_itemId].price, "Insufficient payment");
 
-    function purchase(uint _itemId) external payable {
-        // 1. Check that item exists and not sold
-        require(listedItems[_itemId].itemId != 0, "incorrect _itemId");
-        require(listedItems[_itemId].isSold == false, "Item Already Sold");
-        // 2. Check that enough ETH was paid
-        require(listedItems[_itemId].price == msg.value, "Not Enough ETH");
-        // 3. Change item status to "sold"
         listedItems[_itemId].isSold = true;
-        // 4. Transfer NFT to buyer
-        IERC721(listedItems[_itemId].collectionContract).transferFrom(
-            address(this),
-            msg.sender,
-            listedItems[_itemId].tokenId
+
+        IERC721(listedItems[_itemId].collectionAddress).transferFrom(
+            address(this), msg.sender, listedItems[_itemId].tokenId
         );
-        // 5. Transfer ETH to seller
-        (bool success, ) = listedItems[_itemId].seller.call{value: msg.value}("");
-        require(success, "Transfer of ETH Failed!!!");
+
+        (bool success,) = listedItems[_itemId].seller.call{value: msg.value}("");
+        require(success, "Transfer failed");
+    }
+
+    function getItem(uint256 _itemId) external view returns (Item memory) {
+        return listedItems[_itemId];
     }
 }
