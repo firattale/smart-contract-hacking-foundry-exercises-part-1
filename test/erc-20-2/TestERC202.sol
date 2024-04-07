@@ -6,7 +6,9 @@ import "forge-std/console.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {TokensDepository} from "../../src/erc20-2/TokensDepository.sol";
 /**
- * @dev run "forge test --fork-url $ETH_RPC_URL --fork-block-number 15969633 --match-contract ERC202"
+ * @dev
+ * run  export ETH_RPC_URL=https://eth.llamarpc.com
+ * run "forge test --fork-url $ETH_RPC_URL --fork-block-number 15969633 --match-contract ERC202"
  */
 
 contract TestERC202 is Test {
