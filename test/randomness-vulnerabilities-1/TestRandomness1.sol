@@ -18,10 +18,10 @@ contract TestRandomness1 is Test {
         deployer = makeAddr("deployer");
         attacker = makeAddr("attacker");
 
-        vm.startPrank(deployer);
-        gameContract = new Game();
-        vm.deal(address(gameContract), GAME_POT);
+        vm.deal(deployer, 20 ether);
 
+        vm.startPrank(deployer);
+        gameContract = new Game{value: GAME_POT}();
         vm.stopPrank();
 
         assertEq(address(gameContract).balance, GAME_POT);

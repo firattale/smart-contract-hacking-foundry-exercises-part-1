@@ -3,16 +3,14 @@
 // https://smartcontractshacking.com/#copyright-policy
 pragma solidity ^0.8.13;
 
-interface IGame {
-    function play(uint256 guess) external;
-}
+import {Game} from "./Game.sol";
 
 contract Attack {
-    IGame gameContract;
+    Game gameContract;
     address payable owner;
 
     constructor(address _game) {
-        gameContract = IGame(_game);
+        gameContract = Game(_game);
         owner = payable(msg.sender);
     }
 
