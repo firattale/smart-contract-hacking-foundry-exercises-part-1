@@ -3,12 +3,10 @@ pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
 
-interface TimeLock {
-    // Define function signatures
+interface ITimeLock {
     function depositETH() external payable;
     function increaseMyLockTime(uint256 _secondsToIncrease) external;
     function withdrawETH() external;
-    function getLocktime(address user) external returns (uint256);
 }
 
 contract TestArithmetic1 is Test {
@@ -20,7 +18,7 @@ contract TestArithmetic1 is Test {
     address victim;
     address hacker;
 
-    TimeLock timeLockContract;
+    ITimeLock timeLockContract;
 
     function setUp() public {
         deployer = makeAddr("deployer");
@@ -33,7 +31,7 @@ contract TestArithmetic1 is Test {
     function test_Hack() public {
         vm.prank(deployer);
         address _timeLock = deployCode("TimeLock.sol");
-        timeLockContract = TimeLock(_timeLock);
+        timeLockContract = ITimeLock(_timeLock);
 
         vm.startPrank(victim);
         timeLockContract.depositETH{value: VICTIM_DEPOSIT}();
