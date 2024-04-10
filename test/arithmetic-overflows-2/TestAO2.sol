@@ -9,7 +9,7 @@ interface ISimpleToken {
     function getBalance(address _account) external returns (uint256);
 }
 
-contract TestArithmetic2 is Test {
+contract TestAO2 is Test {
     address deployer;
     address hacker;
     ISimpleToken simpleToken;
@@ -35,7 +35,7 @@ contract TestArithmetic2 is Test {
 
         vm.startPrank(hacker);
 
-        simpleToken.transfer(deployer, type(uint256).max - 1000000 ether);
+        simpleToken.transfer(deployer, UINT256_MAX - 1000000 ether);
 
         assertGt(simpleToken.getBalance(hacker), 1000000 ether);
     }

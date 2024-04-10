@@ -9,10 +9,9 @@ interface ITimeLock {
     function withdrawETH() external;
 }
 
-contract TestArithmetic1 is Test {
+contract TestAO1 is Test {
     uint256 constant ONE_MONTH = 30 * 24 * 60 * 60;
     uint256 constant VICTIM_DEPOSIT = 100 ether;
-    uint256 constant MAX_INT = type(uint256).max;
 
     address deployer;
     address victim;
@@ -40,7 +39,7 @@ contract TestArithmetic1 is Test {
         assertEq(address(timeLockContract).balance, VICTIM_DEPOSIT);
 
         // Attempting to overflow the lock time to enable immediate withdrawal
-        timeLockContract.increaseMyLockTime(MAX_INT - ONE_MONTH);
+        timeLockContract.increaseMyLockTime(UINT256_MAX - ONE_MONTH);
         timeLockContract.withdrawETH();
 
         assertEq(address(victim).balance, VICTIM_DEPOSIT);

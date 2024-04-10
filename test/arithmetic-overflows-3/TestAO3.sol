@@ -36,7 +36,7 @@ interface IAIvestToken {
     function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
 }
 
-contract TestArithmetic3 is Test {
+contract TestAO3 is Test {
     address deployer;
     address user1;
     address user2;
@@ -136,7 +136,7 @@ contract TestArithmetic3 is Test {
 
         // hackNumber = 11579208923731619542357098500868790785326998466564056403945758400791312963994
 
-        uint256 hackNumber = (type(uint256).max / 10) + 1;
+        uint256 hackNumber = (UINT256_MAX / 10) + 1;
 
         console.log("hackNumber", hackNumber);
 

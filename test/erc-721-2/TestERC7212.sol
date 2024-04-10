@@ -2,7 +2,6 @@
 pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
-import "forge-std/console.sol";
 import {OpenOcean} from "../../src/erc721-2/OpenOcean.sol";
 import {DummyERC721} from "../../src/utils/DummyERC721.sol";
 /**

@@ -2,11 +2,10 @@
 pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
-import "forge-std/console.sol";
 import {Game} from "../../src/randomness-vulnerabilities-1/Game.sol";
 import {Attack} from "../../src/randomness-vulnerabilities-1/Attack.sol";
 
-contract TestRandomness1 is Test {
+contract TestRV1 is Test {
     address deployer;
     address attacker;
     Game gameContract;
