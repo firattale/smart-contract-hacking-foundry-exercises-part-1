@@ -4,12 +4,13 @@
 pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 /**
  * @title ApesAirdrop
  * @author JohnnyTime (https:smartcontractshacking.com)
  */
-contract ApesAirdrop is ERC721 {
+contract ApesAirdropSecured is ERC721, ReentrancyGuard {
     uint256 private _tokenIds;
 
     address public owner;
@@ -33,7 +34,9 @@ contract ApesAirdrop is ERC721 {
         _tokenIds++; // Start with 1
     }
 
-    function mint() external returns (uint16) {
+    //Protection 2: Reentrancy Guard
+
+    function mint() external nonReentrant returns (uint16) {
         //Sender is in whitelist & not claimed
         require(isWhitelisted(msg.sender), "not in whitelist");
         require(!claimed[msg.sender], "already claimed");
@@ -43,12 +46,13 @@ contract ApesAirdrop is ERC721 {
         require(tokenId <= maxSupply, "Max supply reached!");
         _tokenIds++;
 
-        //Mint NFT
-        _safeMint(msg.sender, tokenId);
-        emit Minted(msg.sender, tokenId);
+        //Protection 1: CEI
 
         // Update claimed
         claimed[msg.sender] = true;
+        //Mint NFT
+        _safeMint(msg.sender, tokenId);
+        emit Minted(msg.sender, tokenId);
 
         //Return token ID
         return tokenId;
