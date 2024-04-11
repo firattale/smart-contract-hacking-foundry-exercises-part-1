@@ -21,6 +21,7 @@ contract ChainLend {
         borrowToken = IERC20(_borrowToken);
     }
 
+    // @audit-issue  Reentrancy? IMBTC
     function deposit(uint256 amount) public {
         uint256 deposited = deposits[msg.sender];
         depositToken.transferFrom(msg.sender, address(this), amount);
@@ -28,6 +29,8 @@ contract ChainLend {
     }
 
     // Can only be called if the debt is repayed
+    // @audit-ok reentrancy? IMBTC
+
     function withdraw(uint256 amount) public {
         uint256 deposited = deposits[msg.sender];
         require(debt[msg.sender] <= 0, "Please clear your debt to Withdraw Collateral");
@@ -37,6 +40,7 @@ contract ChainLend {
         depositToken.transfer(msg.sender, amount);
     }
 
+    // @audit-ok reentrancy? USDC
     function borrow(uint256 amount) public {
         uint256 deposited = deposits[msg.sender];
         uint256 borrowed = debt[msg.sender];
@@ -53,10 +57,10 @@ contract ChainLend {
         borrowToken.transfer(msg.sender, amount);
     }
 
+    // @audit-issue reentrancy? USDC
     function repay(uint256 amount) public {
         require(debt[msg.sender] > 0, "You don't have any debt");
         require(amount <= debt[msg.sender], "Amount to high! You don't have that much debt");
-
         borrowToken.transferFrom(msg.sender, address(this), amount);
         debt[msg.sender] -= amount;
     }
