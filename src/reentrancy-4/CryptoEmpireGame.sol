@@ -3,13 +3,12 @@
 // https://smartcontractshacking.com/#copyright-policy
 pragma solidity ^0.8.13;
 
-import { IERC1155 } from "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
-import { IERC1155Receiver } from "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
+import {IERC1155} from "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
+import {IERC1155Receiver} from "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
 
 contract CryptoEmpireGame is IERC1155Receiver {
-
     IERC1155 public immutable cryptoEmpireToken;
-    
+
     struct Listing {
         address payable seller;
         address buyer;
@@ -30,12 +29,13 @@ contract CryptoEmpireGame is IERC1155Receiver {
 
     // List an item fro sale (AMOUNT / quantity is always 1)
     function listForSale(uint256 _nftId, uint256 _price) external {
-
         require(cryptoEmpireToken.balanceOf(msg.sender, _nftId) > 0, "You don't own this NFT");
         require(_price > 0, "Price should be greater than 0");
 
         ++numberOfListings;
 
+        // @audit-ok
+        //  first receive the nft then creates the listing
         cryptoEmpireToken.safeTransferFrom(msg.sender, address(this), _nftId, AMOUNT, "");
         Listing storage listing = listings[numberOfListings];
         listing.seller = payable(msg.sender);
@@ -44,59 +44,50 @@ contract CryptoEmpireGame is IERC1155Receiver {
     }
 
     // Buy a listed item
-    function buy(uint256 _listingId) payable external {
-
+    function buy(uint256 _listingId) external payable {
         Listing storage listing = listings[_listingId];
 
         require(listing.seller != address(0), "Listing doesn't exist wrong");
         require(!listing.isSold, "Already sold");
         require(msg.value == listing.price, "Wrong price");
-
+        // @audit-ok no reentrancy first update the state, then transfer token and ether
         listing.buyer = msg.sender;
         listing.isSold = true;
 
         cryptoEmpireToken.safeTransferFrom(address(this), msg.sender, listing.nftId, AMOUNT, "");
 
-        (bool success, ) = listing.seller.call{value: msg.value}("");
+        (bool success,) = listing.seller.call{value: msg.value}("");
         require(success, "Failed to send Ether");
     }
 
     // Stake NFTs
     function stake(uint256 _nftId) external {
-
         require(cryptoEmpireToken.balanceOf(msg.sender, _nftId) > 0, "You don't own this NFT");
         require(!stakedNfts[msg.sender][_nftId], "NFT with the same tokenID cannot be staked again");
-        
+
+        //  @audit-ok
         cryptoEmpireToken.safeTransferFrom(msg.sender, address(this), _nftId, AMOUNT, "");
         stakedNfts[msg.sender][_nftId] = true;
     }
 
     // Unstake NFTs
     function unstake(uint256 _nftId) external {
-
         require(stakedNfts[msg.sender][_nftId], "You haven't staked this NFT");
 
+        //  @audit-issue Reentrancy - First transfer then update state
         cryptoEmpireToken.safeTransferFrom(address(this), msg.sender, _nftId, AMOUNT, "");
         stakedNfts[msg.sender][_nftId] = false;
     }
 
-    function onERC1155Received(
-        address,
-        address,
-        uint256,
-        uint256,
-        bytes calldata 
-    ) external pure returns (bytes4) {
+    function onERC1155Received(address, address, uint256, uint256, bytes calldata) external pure returns (bytes4) {
         return this.onERC1155Received.selector;
     }
 
-    function onERC1155BatchReceived(
-        address,
-        address,
-        uint256[] calldata,
-        uint256[] calldata,
-        bytes calldata 
-    ) external pure returns (bytes4) {
+    function onERC1155BatchReceived(address, address, uint256[] calldata, uint256[] calldata, bytes calldata)
+        external
+        pure
+        returns (bytes4)
+    {
         return this.onERC1155BatchReceived.selector;
     }
 
