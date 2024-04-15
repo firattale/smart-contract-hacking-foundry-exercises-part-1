@@ -10,22 +10,17 @@ interface IProtocolVault {
 }
 
 contract TestAC1 is Test {
-    address deployer;
-    address user1;
-    address user2;
-    address user3;
-    address attacker;
+    address deployer = makeAddr("deployer");
+    address user1 = makeAddr("user1");
+    address user2 = makeAddr("user2");
+    address user3 = makeAddr("user3");
+    address attacker = makeAddr("attacker");
+
     IProtocolVault protocolVault;
 
     uint256 constant USER_DEPOSIT = 10 ether;
 
     function setUp() public {
-        deployer = makeAddr("deployer");
-        user1 = makeAddr("user1");
-        user2 = makeAddr("user2");
-        user3 = makeAddr("user3");
-        attacker = makeAddr("attacker");
-
         vm.deal(user1, USER_DEPOSIT);
         vm.deal(user2, USER_DEPOSIT);
         vm.deal(user3, USER_DEPOSIT);

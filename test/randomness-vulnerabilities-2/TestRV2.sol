@@ -6,17 +6,15 @@ import {Game2} from "../../src/randomness-vulnerabilities-2/Game2.sol";
 import {Attack} from "../../src/randomness-vulnerabilities-2/Attack.sol";
 
 contract TestRV2 is Test {
-    address deployer;
-    address attacker;
+    address deployer = makeAddr("deployer");
+    address attacker = makeAddr("attacker");
+
     Game2 gameContract;
     Attack attackContract;
 
     uint256 constant INITIAL_POT = 20 ether;
 
     function setUp() public {
-        deployer = makeAddr("deployer");
-        attacker = makeAddr("attacker");
-
         vm.deal(deployer, 20 ether);
 
         vm.startPrank(deployer);

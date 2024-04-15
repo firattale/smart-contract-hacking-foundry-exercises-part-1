@@ -6,23 +6,17 @@ import "forge-std/Test.sol";
 import {KilianExclusive} from "../../src/access-control-3/KilianExclusive.sol";
 
 contract TestAC3 is Test {
-    address deployer;
-    address user1;
-    address user2;
-    address user3;
-    address attacker;
+    address deployer = makeAddr("deployer");
+    address user1 = makeAddr("user1");
+    address user2 = makeAddr("user2");
+    address user3 = makeAddr("user3");
+    address attacker = makeAddr("attacker");
 
     KilianExclusive kilianExclusive;
 
     uint256 constant FRAGRENCE_PRICE = 10 ether;
 
     function setUp() public {
-        deployer = makeAddr("deployer");
-        user1 = makeAddr("user1");
-        user2 = makeAddr("user2");
-        user3 = makeAddr("user3");
-        attacker = makeAddr("attacker");
-
         vm.deal(user1, FRAGRENCE_PRICE * 2);
         vm.deal(user2, FRAGRENCE_PRICE * 2);
         vm.deal(user3, FRAGRENCE_PRICE * 2);

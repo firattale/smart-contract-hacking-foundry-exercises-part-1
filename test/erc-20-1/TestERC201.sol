@@ -8,20 +8,17 @@ import "forge-std/Test.sol";
 
 contract TestERC201 is Test {
     MyToken mytoken;
-    address deployer;
-    address user1;
-    address user2;
-    address user3;
+
+    address deployer = makeAddr("deployer");
+    address user1 = makeAddr("user1");
+    address user2 = makeAddr("user2");
+    address user3 = makeAddr("user3");
 
     uint256 constant TEN_K = 100000;
     uint256 constant FIVE_K = 5000;
 
     function setUp() public {
         mytoken = new MyToken();
-        deployer = makeAddr("deployer");
-        user1 = makeAddr("user1");
-        user2 = makeAddr("user2");
-        user3 = makeAddr("user3");
 
         mytoken.mint(deployer, TEN_K);
         mytoken.mint(user1, FIVE_K);

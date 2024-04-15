@@ -9,10 +9,11 @@ import {DummyERC721} from "../../src/utils/DummyERC721.sol";
  */
 
 contract TestERC7212 is Test {
-    address deployer;
-    address user1;
-    address user2;
-    address user3;
+    address deployer = makeAddr("deployer");
+    address user1 = makeAddr("user1");
+    address user2 = makeAddr("user2");
+    address user3 = makeAddr("user3");
+
     DummyERC721 cuteNFT;
     DummyERC721 booblesNFT;
     OpenOcean marketplace;
@@ -20,11 +21,6 @@ contract TestERC7212 is Test {
     uint256 constant INITIAL_BALANCE = 100 ether;
 
     function setUp() public {
-        deployer = makeAddr("deployer");
-        user1 = makeAddr("user1");
-        user2 = makeAddr("user2");
-        user3 = makeAddr("user3");
-
         vm.deal(user1, INITIAL_BALANCE);
         vm.deal(user2, INITIAL_BALANCE);
         vm.deal(user3, INITIAL_BALANCE);

@@ -6,15 +6,12 @@ import {MyToken} from "../../src/erc721-1/MyToken.sol";
 
 contract TestERC7211 is Test {
     MyToken public myTokenNFT;
-    address deployer;
-    address user1;
-    address user2;
+
+    address deployer = makeAddr("deployer");
+    address user1 = makeAddr("user1");
+    address user2 = makeAddr("user2");
 
     function setUp() public {
-        deployer = makeAddr("deployer");
-        user1 = makeAddr("user1");
-        user2 = makeAddr("user2");
-
         myTokenNFT = new MyToken();
         vm.deal(deployer, 10 ether);
         vm.deal(user1, 10 ether);

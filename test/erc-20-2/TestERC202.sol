@@ -11,22 +11,22 @@ import {TokensDepository} from "../../src/erc20-2/TokensDepository.sol";
  */
 
 contract TestERC202 is Test {
-    address constant AAVE_ADDRESS = address(0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9);
-    address constant UNI_ADDRESS = address(0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984);
-    address constant WETH_ADDRESS = address(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2);
+    address constant AAVE_ADDRESS = 0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9;
+    address constant UNI_ADDRESS = 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984;
+    address constant WETH_ADDRESS = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
 
-    address constant AAVE_HOLDER = address(0x2eFB50e952580f4ff32D8d2122853432bbF2E204);
-    address constant UNI_HOLDER = address(0x193cEd5710223558cd37100165fAe3Fa4dfCDC14);
-    address constant WETH_HOLDER = address(0x741AA7CFB2c7bF2A1E7D4dA2e3Df6a56cA4131F3);
+    address constant AAVE_HOLDER = 0x2eFB50e952580f4ff32D8d2122853432bbF2E204;
+    address constant UNI_HOLDER = 0x193cEd5710223558cd37100165fAe3Fa4dfCDC14;
+    address constant WETH_HOLDER = 0x741AA7CFB2c7bF2A1E7D4dA2e3Df6a56cA4131F3;
 
     uint256 constant ONE_ETH = 1 ether;
 
     TokensDepository tokensDepository;
 
-    address deployer;
-    address aaveHolder;
-    address uniHolder;
-    address wethHolder;
+    address deployer = makeAddr("deployer");
+    address aaveHolder = 0x2eFB50e952580f4ff32D8d2122853432bbF2E204;
+    address uniHolder = 0x193cEd5710223558cd37100165fAe3Fa4dfCDC14;
+    address wethHolder = 0x741AA7CFB2c7bF2A1E7D4dA2e3Df6a56cA4131F3;
 
     address rAAVE;
     address rUNI;
@@ -37,13 +37,6 @@ contract TestERC202 is Test {
     uint256 initialWETHBalance;
 
     function setUp() public {
-        deployer = address(1);
-
-        // Load holders (accounts which hold tokens on Mainnet)
-        aaveHolder = address(0x2eFB50e952580f4ff32D8d2122853432bbF2E204);
-        uniHolder = address(0x193cEd5710223558cd37100165fAe3Fa4dfCDC14);
-        wethHolder = address(0x741AA7CFB2c7bF2A1E7D4dA2e3Df6a56cA4131F3);
-
         // Send some ETH to tokens holders
         vm.deal(aaveHolder, ONE_ETH);
         vm.deal(uniHolder, ONE_ETH);

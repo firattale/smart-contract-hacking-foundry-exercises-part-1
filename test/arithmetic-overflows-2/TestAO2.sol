@@ -10,17 +10,15 @@ interface ISimpleToken {
 }
 
 contract TestAO2 is Test {
-    address deployer;
-    address hacker;
+    address deployer = makeAddr("deployer");
+    address hacker = makeAddr("hacker");
+
     ISimpleToken simpleToken;
 
     uint256 constant DEPLOYER_MINT = 100000 ether;
     uint256 constant ATTACKER_MINT = 10 ether;
 
-    function setUp() public {
-        deployer = makeAddr("deployer");
-        hacker = makeAddr("hacker");
-    }
+    function setUp() public {}
 
     function test_Hack() public {
         vm.startPrank(deployer);

@@ -10,21 +10,16 @@ import {Attack} from "../../src/reentrancy-4/Attack.sol";
 import {NftId} from "../../src/reentrancy-4/GameItems.sol";
 
 contract TestReentrancy4 is Test {
-    address deployer;
-    address user1;
-    address user2;
-    address attacker;
+    address deployer = makeAddr("deployer");
+    address user1 = makeAddr("user1");
+    address user2 = makeAddr("user2");
+    address attacker = makeAddr("attacker");
 
     CryptoEmpireToken cryptoEmpireToken;
     CryptoEmpireGame cryptoEmpireGame;
     Attack attackContract;
 
     function setUp() public {
-        deployer = makeAddr("deployer");
-        user1 = makeAddr("user1");
-        user2 = makeAddr("user2");
-        attacker = makeAddr("attacker");
-
         vm.startPrank(deployer);
         cryptoEmpireToken = new CryptoEmpireToken();
         cryptoEmpireGame = new CryptoEmpireGame(address(cryptoEmpireToken));

@@ -8,24 +8,17 @@ import {ApesAirdrop} from "../../src/reentrancy-2/ApesAirdrop.sol";
 import {AttackApesAirdrop} from "../../src/reentrancy-2/AttackApesAirdrop.sol";
 
 contract TestReentrancy2 is Test {
-    address deployer;
-    address user1;
-    address user2;
-    address user3;
-    address user4;
-    address attacker;
+    address deployer = makeAddr("deployer");
+    address user1 = makeAddr("user1");
+    address user2 = makeAddr("user2");
+    address user3 = makeAddr("user3");
+    address user4 = makeAddr("user4");
+    address attacker = makeAddr("attacker");
 
     ApesAirdrop apesAirdrop;
     AttackApesAirdrop attackApesAirdrop;
 
     function setUp() public {
-        deployer = makeAddr("deployer");
-        user1 = makeAddr("user1");
-        user2 = makeAddr("user2");
-        user3 = makeAddr("user3");
-        user4 = makeAddr("user4");
-        attacker = makeAddr("attacker");
-
         address[] memory users = new address[](5);
         users[0] = user1;
         users[1] = user2;

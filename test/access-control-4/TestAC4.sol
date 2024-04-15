@@ -6,11 +6,11 @@ import "forge-std/Test.sol";
 import {Starlight} from "../../src/access-control-4/Starlight.sol";
 
 contract TestAC4 is Test {
-    address deployer;
-    address user1;
-    address user2;
-    address user3;
-    address attacker;
+    address deployer = makeAddr("deployer");
+    address user1 = makeAddr("user1");
+    address user2 = makeAddr("user2");
+    address user3 = makeAddr("user3");
+    address attacker = makeAddr("attacker");
 
     Starlight starlight;
 
@@ -19,12 +19,6 @@ contract TestAC4 is Test {
     uint256 constant USER3_PURCHASE = 33 ether;
 
     function setUp() public {
-        deployer = makeAddr("deployer");
-        user1 = makeAddr("user1");
-        user2 = makeAddr("user2");
-        user3 = makeAddr("user3");
-        attacker = makeAddr("attacker");
-
         vm.deal(user1, USER1_PURCHASE);
         vm.deal(user2, USER2_PURCHASE);
         vm.deal(user3, USER3_PURCHASE);

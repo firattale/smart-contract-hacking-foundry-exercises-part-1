@@ -6,8 +6,9 @@ import {SimpleSmartWallet} from "../../src/tx-origin-phishing-1/SimpleSmartWalle
 import {Charity} from "../../src/tx-origin-phishing-1/Charity.sol";
 
 contract TestTX1 is Test {
-    address fundManager;
-    address hacker;
+    address fundManager = makeAddr("fundManager");
+    address hacker = makeAddr("hacker");
+
     SimpleSmartWallet simpleSmartWallet;
     Charity charity;
 
@@ -15,9 +16,6 @@ contract TestTX1 is Test {
     uint256 constant CHARITY_DONATION = 0.1 ether;
 
     function setUp() public {
-        fundManager = makeAddr("fundManager");
-        hacker = makeAddr("hacker");
-
         vm.deal(fundManager, HEDGE_FUND_DEPOSIT + CHARITY_DONATION);
 
         vm.prank(fundManager);

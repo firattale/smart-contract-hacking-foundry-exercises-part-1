@@ -13,17 +13,13 @@ contract TestAO1 is Test {
     uint256 constant ONE_MONTH = 30 * 24 * 60 * 60;
     uint256 constant VICTIM_DEPOSIT = 100 ether;
 
-    address deployer;
-    address victim;
-    address hacker;
+    address deployer = makeAddr("deployer");
+    address victim = makeAddr("victim");
+    address hacker = makeAddr("hacker");
 
     ITimeLock timeLockContract;
 
     function setUp() public {
-        deployer = makeAddr("deployer");
-        victim = makeAddr("victim");
-        hacker = makeAddr("hacker");
-
         vm.deal(victim, VICTIM_DEPOSIT);
     }
 

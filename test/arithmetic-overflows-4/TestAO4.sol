@@ -9,17 +9,13 @@ import {PumpMeToken} from "../../src/arithmetic-overflows-4/PumpMeToken.sol";
 contract TestAO4 is Test {
     uint256 constant INITIAL_SUPPLY = 1000000 ether;
 
-    address deployer;
-    address hacker;
-    address lucky_user;
+    address deployer = makeAddr("deployer");
+    address hacker = makeAddr("hacker");
+    address lucky_user = makeAddr("lucky_user");
 
     PumpMeToken token;
 
     function setUp() public {
-        deployer = makeAddr("deployer");
-        hacker = makeAddr("hacker");
-        lucky_user = makeAddr("lucky_user");
-
         vm.startPrank(deployer);
 
         token = new PumpMeToken(INITIAL_SUPPLY);

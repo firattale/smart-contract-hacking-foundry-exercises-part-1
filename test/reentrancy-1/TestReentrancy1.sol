@@ -6,12 +6,12 @@ import {EtherBank} from "../../src/reentrancy-1/EtherBank.sol";
 import {AttackBank} from "../../src/reentrancy-1/AttackBank.sol";
 
 contract TestReentrancy1 is Test {
-    address deployer;
-    address user1;
-    address user2;
-    address user3;
-    address user4;
-    address attacker;
+    address deployer = makeAddr("deployer");
+    address user1 = makeAddr("user1");
+    address user2 = makeAddr("user2");
+    address user3 = makeAddr("user3");
+    address user4 = makeAddr("user4");
+    address attacker = makeAddr("attacker");
     EtherBank etherBank;
     AttackBank attackBank;
 
@@ -22,13 +22,6 @@ contract TestReentrancy1 is Test {
     uint256 constant TOTAL_DEPOSIT = USER1_DEPOSIT + USER2_DEPOSIT + USER3_DEPOSIT + USER4_DEPOSIT;
 
     function setUp() public {
-        deployer = makeAddr("deployer");
-        user1 = makeAddr("user1");
-        user2 = makeAddr("user2");
-        user3 = makeAddr("user3");
-        user4 = makeAddr("user4");
-        attacker = makeAddr("attacker");
-
         vm.deal(user1, USER1_DEPOSIT);
         vm.deal(user2, USER2_DEPOSIT);
         vm.deal(user3, USER3_DEPOSIT);

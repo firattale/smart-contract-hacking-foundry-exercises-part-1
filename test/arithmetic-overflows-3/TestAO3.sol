@@ -37,11 +37,11 @@ interface IAIvestToken {
 }
 
 contract TestAO3 is Test {
-    address deployer;
-    address user1;
-    address user2;
-    address user3;
-    address hacker;
+    address deployer = makeAddr("deployer");
+    address user1 = makeAddr("user1");
+    address user2 = makeAddr("user2");
+    address user3 = makeAddr("user3");
+    address hacker = makeAddr("hacker");
 
     uint256 constant FIRST_INVESTOR_INVESTED = 520 ether;
     uint256 constant SECOND_INVESTOR_INVESTED = 126 ether;
@@ -55,12 +55,6 @@ contract TestAO3 is Test {
     IAIvestToken AIvestToken;
 
     function setUp() public {
-        deployer = makeAddr("deployer");
-        user1 = makeAddr("user1");
-        user2 = makeAddr("user2");
-        user3 = makeAddr("user3");
-        hacker = makeAddr("hacker");
-
         TOTAL_INVESTED =
             FIRST_INVESTOR_INVESTED + SECOND_INVESTOR_INVESTED + THIRD_INVESTOR_INVESTED - SECOND_INVESTOR_REFUNDED;
 

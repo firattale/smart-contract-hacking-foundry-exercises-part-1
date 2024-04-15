@@ -6,9 +6,9 @@ import "forge-std/Test.sol";
 import {ToTheMoon} from "../../src/access-control-2/ToTheMoon.sol";
 
 contract TestAC2 is Test {
-    address deployer;
-    address user1;
-    address attacker;
+    address deployer = makeAddr("deployer");
+    address user1 = makeAddr("user1");
+    address attacker = makeAddr("attacker");
 
     ToTheMoon toTheMoon;
 
@@ -16,10 +16,6 @@ contract TestAC2 is Test {
     uint256 constant USER_MINT = 10 ether;
 
     function setUp() public {
-        deployer = makeAddr("deployer");
-        user1 = makeAddr("user1");
-        attacker = makeAddr("attacker");
-
         vm.startPrank(deployer);
         toTheMoon = new ToTheMoon(INITIAL_MINT);
         toTheMoon.mint(user1, USER_MINT);
